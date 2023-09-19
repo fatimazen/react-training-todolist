@@ -1,9 +1,23 @@
 import React from "react";
+import  { useEffect, useState } from "react";
 import "./Task.css";
+import TaskType from "../models/Task"
 
-type TaskProps = {};
 
-export const Task = ({}: TaskProps) => {
+type TaskProps = {
+task:TaskType, 
+deleteTask : (id:number) =>void
+editTask : (id:number) =>void;
+
+
+};
+
+
+export const Task = ({task, deleteTask, editTask}: TaskProps) => {
+  const [editedTask, setEditedTask] = useState<TaskType>(task);
+  useEffect(() => {
+    setEditedTask(task);
+  }, [task]);
   return (
     <div className="task-container">
       <div className="task-content">
@@ -11,11 +25,11 @@ export const Task = ({}: TaskProps) => {
           <input type="checkbox" checked={false} />
           <span className="checkmark"></span>
         </label>
-        <p>"Titre de la tâche"</p>
+        <p>{task.id} <br /> {task.title} <br /> {task.description}</p>
       </div>
       <div className="task-actions">
-        <button onClick={() => console.log("edit")}>Edit</button>
-        <button onClick={() => console.log("delete")}>Delete</button>
+        <button onClick={() => editTask(task.id)}>Edit</button>
+        <button onClick={() => deleteTask(task.id)}>Delete</button>
       </div>
     </div>
   );
